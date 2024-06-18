@@ -15,34 +15,15 @@ This is an official implementation of FarSeg in our CVPR 2020 paper [Foreground-
 ---------------------
 # Video_demo
 <div align="center">
-  
+  video-demo.mp4
 </div>
+
 ## News
 - 2024/03, source code of FarSeg++ is released.
 - 2023/10, [UV6K dataset](https://zenodo.org/record/8404754) is publcily available.
 - 2023/07, FarSeg++ is accepted by IEEE TPAMI.
 
-## Citation
-If you use FarSeg or FarSeg++ in your research, please cite the following paper:
-```text
-@inproceedings{zheng2020foreground,
-  title={Foreground-Aware Relation Network for Geospatial Object Segmentation in High Spatial Resolution Remote Sensing Imagery},
-  author={Zheng, Zhuo and Zhong, Yanfei and Wang, Junjue and Ma, Ailong},
-  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
-  pages={4096--4105},
-  year={2020}
-}
-@article{zheng2023farseg++,
-  title={FarSeg++: Foreground-Aware Relation Network for Geospatial Object Segmentation in High Spatial Resolution Remote Sensing Imagery},
-  author={Zheng, Zhuo and Zhong, Yanfei and Wang, Junjue and Ma, Ailong and Zhang, Liangpei},
-  journal={IEEE Transactions on Pattern Analysis and Machine Intelligence},
-  year={2023},
-  volume={45},
-  number={11},
-  pages={13715-13729},
-  publisher={IEEE}
-}
-```
+
 
 ## Getting Started
 ### Install SimpleCV
