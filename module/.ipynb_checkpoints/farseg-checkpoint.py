@@ -11,20 +11,9 @@ from module.loss import softmax_focalloss
 from module.loss import annealing_softmax_focalloss
 from module.loss import cosine_annealing, poly_annealing, linear_annealing
 import simplecv.module as scm
-from configs.isaid.farseg50 import config as cfg
 
 
 class SceneRelation(nn.Module):
-    '''
-        该模块接受一个场景特征和多个特征列表作为输入，对这些特征进行处理，并输出经过关系加权处理后的特征。
-    在初始化过程中，根据参数scale_aware_proj的值选择是否使用多个网络进行场景特征的处理。
-    如果scale_aware_proj为True，则会使用多个卷积操作对场景特征进行处理；否则仅使用一个卷积操作。
-    同时，对于特征列表中的每一个特征，都会有一个内容编码器和特征重编码器用于处理。
-    在前向传播过程中，首先对特征列表中的每一个特征进行内容编码，然后根据场景特征和编码后的特征计算关系。
-    根据是否使用多个网络处理场景特征，选择相应的关系计算方式。最后，将关系和特征列表中的特征进行点乘，
-    并经过特征重编码器处理，得到处理后的特征列表。
-    这样设计的目的是利用关系图对特征进行重加权，提高前景特征的区分度，从而提升模型性能。
-    '''
     def __init__(self,
                  in_channels,
                  channel_list,
@@ -51,7 +40,6 @@ class SceneRelation(nn.Module):
         self.content_encoders = nn.ModuleList()
         self.feature_reencoders = nn.ModuleList()
         for c in channel_list:
-            # 通过内容保留机制改进：原始的F-S关系模块利用关系图对非线性变换的特征图进行重新加权，以提高前景特征的区分度
             self.content_encoders.append(
                 nn.Sequential(
                     nn.Conv2d(c, out_channels, 1),
@@ -87,16 +75,6 @@ class SceneRelation(nn.Module):
 
 
 class AssymetricDecoder(nn.Module):
-    '''
-        这个模块实现了一个非对称的解码器，用于对输入的特征进行解码处理。
-    在初始化方法中，根据输入的参数设置，确定是否使用批量归一化或组归一化作为标准化函数，
-    并根据不同的标准化函数进行初始化。接着，根据输入的特征输出步幅设置，构建解码器的网络块。
-    每个网络块中包含了若干个卷积层、标准化层、ReLU激活函数以及上采样层。
-    同时，根据输入和输出特征的步幅计算需要的上采样次数，并决定网络块中的层数。
-    在前向传播方法中，遍历所有网络块，分别对输入的特征列表中的特征进行解码处理，
-    得到解码后的特征列表。最后，将所有解码后的特征列表相加并除以4，得到最终的输出特征。
-    这个解码器的设计是为了将不同步幅的特征进行解码合并，最终得到统一步幅的输出特征，以提高网络的性能和效果。
-    '''
     def __init__(self,
                  in_channels,
                  out_channels,
@@ -140,17 +118,7 @@ class AssymetricDecoder(nn.Module):
 
 @registry.MODEL.register('FarSeg')
 class FarSeg(CVModule):
-    '''
-    该模块实现了一个图像分割网络，通过使用ResNet编码器、FPN处理特征、非对称解码器进行解码等模块，
-    可以实现对图像进行分割任务的预测和训练。
-    '''
     def __init__(self, config):
-        '''
-        在初始化方法中，首先调用父类CVModule的初始化方法，并注册了一个名为buffer_step的缓冲区。
-        然后依次创建了ResNet的编码器（self.en）、FPN（self.fpn）、非对称解码器（self.decoder）
-        以及用于预测类别的卷积层（self.cls_pred_conv）等模块。根据是否支持场景关系（scene_relation）、
-        损失类型等设置，选择性地打印相应信息和配置模块。
-        '''
         super(FarSeg, self).__init__(config)
         self.register_buffer('buffer_step', torch.zeros((), dtype=torch.float32))
 
@@ -175,12 +143,6 @@ class FarSeg(CVModule):
             print('loss type: {}'.format(self.config.annealing_softmax_focalloss.annealing_type))
 
     def forward(self, x, y=None):
-        '''
-        前向传播方法，接受输入x和可选的标签y，返回预测结果或者训练损失。首先通过编码器获取特征列表，
-        然后使用FPN对特征进行处理。根据是否存在场景关系，选择性地进行场景关系处理。
-        之后，通过非对称解码器对特征列表进行解码，得到最终特征。将最终特征传入类别预测的卷积层，
-        再进行4倍上采样，得到最终类别预测结果。如果处于训练状态，计算并返回损失值。
-        '''
         feat_list = self.en(x)
         fpn_feat_list = self.fpn(feat_list)
         if 'scene_relation' in self.config:
@@ -208,13 +170,6 @@ class FarSeg(CVModule):
         return cls_pred.softmax(dim=1)
 
     def cls_loss(self, y_pred, y_true):
-        '''
-        定义了分类损失的计算方法，包括Softmax Focal Loss和Cosine Annealing Softmax Focal Loss等
-        不同的计算方式，根据配置选择相应的损失计算方式。
-        :param y_pred:
-        :param y_true:
-        :return:
-        '''
         if 'softmax_focalloss' in self.config:
             return softmax_focalloss(y_pred, y_true.long(), ignore_index=self.config.loss.ignore_index,
                                      gamma=self.config.softmax_focalloss.gamma,
@@ -232,9 +187,6 @@ class FarSeg(CVModule):
         return F.cross_entropy(y_pred, y_true.long(), ignore_index=self.config.loss.ignore_index)
 
     def set_defalut_config(self):
-        '''
-        设置默认的模型配置，包括ResNet编码器的参数、FPN的参数、解码器的参数、类别数等默认设置。
-        '''
         self.config.update(dict(
             resnet_encoder=dict(
                 resnet_type='resnet50',
@@ -268,7 +220,3 @@ class FarSeg(CVModule):
                 ignore_index=255,
             )
         ))
-
-
-# if __name__ == '__main__':
-#     print(FarSeg(config=cfg))

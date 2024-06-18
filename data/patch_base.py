@@ -2,6 +2,9 @@ from torch.utils.data import Dataset
 
 from simplecv.data.preprocess import sliding_window
 from PIL import Image
+from PIL import ImageFile
+
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 import simplecv as sc
 
 DEFAULT_PATCH_CONFIG = dict(

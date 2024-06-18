@@ -1,0 +1,12 @@
+2024-06-11 09:43:06, INFO:SimpleCV:[NVIDIA/torch] amp optimizer. opt_level = O1
+2024-06-11 09:43:06, INFO:SimpleCV:torch sync bn: on
+2024-06-11 09:43:06, INFO:SimpleCV:external parameter: []
+2024-06-11 09:43:06, INFO:SimpleCV:[trainable params] 246/246
+2024-06-11 09:43:06, INFO:SimpleCV:#params: 31370064, 31.37 M
+2024-06-11 09:43:06, INFO:SimpleCV:batch_size_per_gpu = 4
+2024-06-11 09:43:06, INFO:SimpleCV:use 1 forward and 1 backward mode.
+2024-06-11 09:43:06, INFO:SimpleCV:num_epochs ~= 7.1
+2024-06-11 09:43:06, INFO:SimpleCV:num_iters = 60000
+2024-06-11 09:44:26, INFO:SimpleCV:total_loss = 0.603558, cls_loss = 0.603558, mem = 15555.18, lr = 0.006995, step: 50, (1.59 sec / step, data: 1.315 sec, eta: 26:28:40)
+2024-06-11 09:45:46, INFO:SimpleCV:total_loss = 0.445938, cls_loss = 0.445938, mem = 15563.09, lr = 0.00699, step: 100, (1.599 sec / step, data: 1.371 sec, eta: 26:35:51)
+2024-06-11 09:47:01, INFO:SimpleCV:total_loss = 0.25196, cls_loss = 0.25196, mem = 15571.0, lr = 0.006984, step: 150, (1.558 sec / step, data: 1.376 sec, eta: 25:53:42)

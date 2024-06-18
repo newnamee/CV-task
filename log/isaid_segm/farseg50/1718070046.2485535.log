@@ -1,0 +1,9 @@
+2024-06-11 09:40:46, INFO:SimpleCV:[NVIDIA/torch] amp optimizer. opt_level = O1
+2024-06-11 09:40:46, INFO:SimpleCV:torch sync bn: on
+2024-06-11 09:40:46, INFO:SimpleCV:external parameter: []
+2024-06-11 09:40:46, INFO:SimpleCV:[trainable params] 246/246
+2024-06-11 09:40:46, INFO:SimpleCV:#params: 31370064, 31.37 M
+2024-06-11 09:40:46, INFO:SimpleCV:batch_size_per_gpu = 4
+2024-06-11 09:40:46, INFO:SimpleCV:use 1 forward and 1 backward mode.
+2024-06-11 09:40:46, INFO:SimpleCV:num_epochs ~= 7.1
+2024-06-11 09:40:46, INFO:SimpleCV:num_iters = 60000

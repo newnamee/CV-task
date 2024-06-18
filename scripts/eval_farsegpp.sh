@@ -4,10 +4,10 @@
 export CUDA_VISIBLE_DEVICES=0
 export PYTHONPATH=$PYTHONPATH:`pwd`
 
-config_path='isaid.farseg50'
-model_dir='autodl-tmp/project/FarSeg/log/isaid_segm/farseg50'
-ckpt_path='autodl-tmp/project/FarSeg/log/isaid_segm/farseg50/model-60000.pth'
-vis_dir='autodl-tmp/project/FarSeg/log/isaid_segm/farseg50/vis-60000'
+config_path='isaid.2x_ms_mitb2_farsegpp_seg2obj'
+model_dir='autodl-tmp/project/FarSeg/log/isaid_segm/pretrained'
+ckpt_path='autodl-tmp/project/FarSeg/log/isaid_segm/pretrained/mit_b2.pth'
+vis_dir='autodl-tmp/project/FarSeg/log/isaid_segm/pretrained/vis-120000'
 
 image_dir='/root/autodl-tmp/Data/iSAID/val/images'
 mask_dir='/root/autodl-tmp/Data/iSAID/val/masks'

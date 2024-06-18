@@ -6,6 +6,9 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 from PIL import Image
+from PIL import ImageFile
+
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 from simplecv import registry
 from simplecv.api.preprocess import comm
 from simplecv.api.preprocess import segm
@@ -19,10 +22,12 @@ from torch.utils.data.dataset import Dataset
 
 from data.patch_base import PatchBasedDataset
 
+# 图像大小
 DEFAULT_PATCH_CONFIG = dict(
     patch_size=896,
     stride=512,
 )
+# 16个类别对应的rgb值
 COLOR_MAP = OrderedDict({
     'background': (0, 0, 0),
     'ship': (0, 0, 63),
@@ -74,6 +79,7 @@ class ISAIDSegmmDataset(PatchBasedDataset):
         super(ISAIDSegmmDataset, self).__init__(image_dir, mask_dir, patch_config, transforms=transforms)
 
     def generate_path_pair(self):
+        # 生成图像标签对
         image_path_list = glob.glob(os.path.join(self.image_dir, '*.png'))
 
         mask_path_list = [os.path.join(self.mask_dir, os.path.basename(imfp).replace('.png',
@@ -104,6 +110,7 @@ class ISAIDSegmmDataset(PatchBasedDataset):
 
 @registry.DATALOADER.register('ISAIDSegmmDataLoader')
 class ISAIDSegmmDataLoader(DataLoader):
+    # 数据加载模块注册
     def __init__(self, config):
         self.config = AttrDict()
         self.set_defalut()

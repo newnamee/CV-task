@@ -2,15 +2,12 @@ import torch.nn as nn
 from simplecv.module import fpn
 
 
-from data.isaid import RemoveColorMap
+from FarSeg.data.isaid import RemoveColorMap
 from simplecv.api.preprocess import segm
 from simplecv.api.preprocess import comm
 
-
-# 配置文件
 config = dict(
     model=dict(
-        # 模块参数
         type='FarSeg',
         params=dict(
             resnet_encoder=dict(
@@ -46,12 +43,10 @@ config = dict(
             ),
             num_classes=16,
             loss=dict(
-                # 损失函数参数
                 cls_weight=1.0,
                 ignore_index=255,
             ),
             annealing_softmax_focalloss=dict(
-                # 交叉熵损失函数参数
                 gamma=2.0,
                 max_step=10000,
                 annealing_type='cosine'
@@ -60,19 +55,15 @@ config = dict(
     ),
     data=dict(
         train=dict(
-            # 训练集参数
             type='ISAIDSegmmDataLoader',
-            # 图像加载方式
             params=dict(
-                # 训练集地址和大小
-                image_dir='/root/autodl-tmp/Data/iSAID/train/images',
-                mask_dir='/root/autodl-tmp/Data/iSAID/train/masks',
+                image_dir='./isaid_segm/train/images',
+                mask_dir='./isaid_segm/train/masks',
                 patch_config=dict(
                     patch_size=896,
                     stride=512,
                 ),
                 transforms=[
-                    # 图像变换，如翻转，缩放等
                     RemoveColorMap(),
                     segm.RandomHorizontalFlip(0.5),
                     segm.RandomVerticalFlip(0.5),
@@ -82,22 +73,20 @@ config = dict(
                     comm.THMeanStdNormalize((123.675, 116.28, 103.53), (58.395, 57.12, 57.375))
                 ],
                 batch_size=4,
-                num_workers=4,
+                num_workers=8,
                 training=True
             ),
         ),
         test=dict(
             type='ISAIDSegmmDataLoader',
             params=dict(
-                # 验证集地址和大小
-                image_dir=r'/root/autodl-tmp/Data/iSAID/val/images',
-                mask_dir=r'/root/autodl-tmp/Data/iSAID/val/masks',
+                image_dir='./isaid_segm/val/images',
+                mask_dir='./isaid_segm/val/masks',
                 patch_config=dict(
                     patch_size=896,
                     stride=512,
                 ),
                 transforms=[
-                    # 数据变换
                     RemoveColorMap(),
                     segm.DivisiblePad(32, 255),
                     segm.ToTensor(True),
@@ -110,7 +99,6 @@ config = dict(
         ),
     ),
     optimizer=dict(
-        # 优化方式sgd
         type='sgd',
         params=dict(
             momentum=0.9,
@@ -122,7 +110,6 @@ config = dict(
         )
     ),
     learning_rate=dict(
-        # 学习率
         type='poly',
         params=dict(
             base_lr=0.007,

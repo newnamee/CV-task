@@ -14,6 +14,7 @@ This is an official implementation of FarSeg in our CVPR 2020 paper [Foreground-
 
 ---------------------
 ## News
+- 2024/03, source code of FarSeg++ is released.
 - 2023/10, [UV6K dataset](https://zenodo.org/record/8404754) is publcily available.
 - 2023/07, FarSeg++ is accepted by IEEE TPAMI.
 
@@ -66,12 +67,12 @@ mv ./farseg50.pth ./log/isaid_segm/farseg50/model-60000.pth
 ```
 #### 3. inference on iSAID val
 ```bash
-bash ./scripts/eval_farseg50.sh
+bash ./scripts/eval_MCCA.sh
 ```
 
 ### Train Model
 ```bash
-bash ./scripts/train_farseg50.sh
+bash ./scripts/train_MCCA.sh
 ```
 
 
