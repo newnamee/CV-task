@@ -13,6 +13,10 @@
 This is an official implementation of FarSeg in our CVPR 2020 paper [Foreground-Aware Relation Network for Geospatial Object Segmentation in High Spatial Resolution Remote Sensing Imagery](https://openaccess.thecvf.com/content_CVPR_2020/papers/Zheng_Foreground-Aware_Relation_Network_for_Geospatial_Object_Segmentation_in_High_Spatial_CVPR_2020_paper.pdf).
 
 ---------------------
+# Video_demo
+<div align="center">
+  
+</div>
 ## News
 - 2024/03, source code of FarSeg++ is released.
 - 2023/10, [UV6K dataset](https://zenodo.org/record/8404754) is publcily available.
@@ -67,12 +71,12 @@ mv ./farseg50.pth ./log/isaid_segm/farseg50/model-60000.pth
 ```
 #### 3. inference on iSAID val
 ```bash
-bash ./scripts/eval_MCCA.sh
+bash ./scripts/eval_farseg50.sh
 ```
 
 ### Train Model
 ```bash
-bash ./scripts/train_MCCA.sh
+bash ./scripts/train_farseg50.sh
 ```
 
 
